@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1030167299071",
+    "project_id": "learn-firebase-be52c",
+    "storage_bucket": "learn-firebase-be52c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1030167299071:android:b06269e6f557173c4b9dca",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqdqG8kZuRSSTGuA_Hq66hLVdM2fepUhs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
