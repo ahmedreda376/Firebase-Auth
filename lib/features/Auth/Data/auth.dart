@@ -15,9 +15,22 @@ class Auth {
         password: password,
       );
 
-      print("Login Successfully: ${credential.user?.email}");
+      if (FirebaseAuth.instance.currentUser!.emailVerified) {
+        Navigator.of(context).pushReplacementNamed('home');
+      } else {
+        AwesomeDialog(
+          context: context,
+          dialogType: DialogType.error,
+          animType: AnimType.rightSlide,
+          title: 'Error',
+          desc:
+              'Please Open The Link That We Sent To You To Verify Your Email ',
+          btnCancelOnPress: () {},
+          btnOkOnPress: () {},
+        ).show();
+      }
 
-      Navigator.of(context).pushReplacementNamed('home');
+      print("Login Successfully: ${credential.user?.email}");
     } on FirebaseAuthException catch (e) {
       AwesomeDialog(
         context: context,
@@ -54,6 +67,8 @@ class Auth {
     try {
       final credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+
+      FirebaseAuth.instance.currentUser!.sendEmailVerification();
 
       print("Account Created: ${credential.user?.email}");
 
