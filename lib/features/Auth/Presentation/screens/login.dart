@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/features/Auth/Data/auth.dart';
 import 'package:flutter_application_1/features/Auth/Presentation/widgets/custom_textformField.dart';
@@ -83,12 +84,53 @@ class _LoginScreenState extends State<LoginScreen> {
                     hinttext: "ُEnter Your Password",
                     mycontroller: password,
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 10, bottom: 20),
-                    alignment: Alignment.topRight,
-                    child: const Text(
-                      "Forgot Password ?",
-                      style: TextStyle(fontSize: 14),
+                  InkWell(
+                    onTap: () async {
+                      if (email.text.trim().isEmpty) {
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.error,
+                          title: 'Error',
+                          desc: 'Please Fill Your Email',
+                          btnOkOnPress: () {},
+                        ).show();
+
+                        return;
+                      }
+
+                      try {
+                        await Auth().resetPassword(email.text.trim());
+
+                        if (!context.mounted) return;
+
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.success,
+                          title: 'Success',
+                          desc:
+                              'Please Check Your Email To Reset Your Password',
+                          btnOkOnPress: () {},
+                        ).show();
+                      } catch (e) {
+                        if (!context.mounted) return;
+
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.error,
+                          title: 'Error',
+                          desc: e.toString(),
+                          btnOkOnPress: () {},
+                        ).show();
+                      }
+                    },
+
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 10, bottom: 20),
+                      alignment: Alignment.topRight,
+                      child: const Text(
+                        "Forgot Password ?",
+                        style: TextStyle(fontSize: 14),
+                      ),
                     ),
                   ),
                 ],
@@ -112,7 +154,22 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               color: Colors.red[700],
               textColor: Colors.white,
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  await Auth().signInWithGoogle();
+                  Navigator.of(context).pushReplacementNamed('home');
+                } catch (e) {
+                  AwesomeDialog(
+                    context: context,
+                    dialogType: DialogType.error,
+                    animType: AnimType.rightSlide,
+                    title: 'Error',
+                    desc: e.toString(),
+                    btnCancelOnPress: () {},
+                    btnOkOnPress: () {},
+                  ).show();
+                }
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

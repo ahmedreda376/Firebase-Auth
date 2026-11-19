@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_application_1/features/Auth/Presentation/screens/add.dart';
 import 'package:flutter_application_1/firebase_options.dart';
 import 'package:flutter_application_1/features/Auth/Presentation/screens/home_screen.dart';
 import 'package:flutter_application_1/features/Auth/Presentation/screens/login.dart';
@@ -38,11 +39,14 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: FirebaseAuth.instance.currentUser == null ? LoginScreen() : HomeScreen(),
+      home: FirebaseAuth.instance.currentUser == null
+          ? LoginScreen()
+          : Homepage(),
       routes: {
         "signup": (context) => SignUp(),
         "login": (context) => LoginScreen(),
-        "home": (context) => HomeScreen(),
+        "home": (context) => Homepage(),
+        "addcategory": (context) => AddCategory(),
       },
     );
   }

@@ -1,6 +1,8 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class Auth {
   // Login
@@ -58,7 +60,6 @@ class Auth {
   }
 
   // SignUp
-
   Future<void> signUp(
     String email,
     String password,
@@ -102,6 +103,35 @@ class Auth {
   // LogOut
   Future<void> logOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
-    Navigator.of(context).pushNamed('login');
+  }
+
+  // Reset Password
+  Future<void> resetPassword(String email) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  }
+
+  // Signin With Google
+
+  Future signInWithGoogle() async {
+    // Web
+    if (kIsWeb) {
+      GoogleAuthProvider googleProvider = GoogleAuthProvider();
+
+      return await FirebaseAuth.instance.signInWithPopup(googleProvider);
+    }
+
+    // Android
+    await GoogleSignIn.instance.initialize();
+
+    final GoogleSignInAccount googleUser = await GoogleSignIn.instance
+        .authenticate();
+
+    final GoogleSignInAuthentication googleAuth = googleUser.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      idToken: googleAuth.idToken,
+    );
+
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 }
